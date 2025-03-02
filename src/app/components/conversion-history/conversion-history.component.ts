@@ -68,4 +68,8 @@ export class ConversionHistoryComponent implements OnInit, OnDestroy {
       this.storageService.clearConversions();
     }
   }
+
+  trackByTimestamp(index: number, item: any): number {
+    return item.timestamp;
+  }
 }
