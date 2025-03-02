@@ -1,7 +1,8 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appNumberOnly]'
+  selector: '[appNumberOnly]',
+  standalone: true 
 })
 export class NumberOnlyDirective {
   // Allowed keys (numbers, backspace, tab, delete, decimal point, arrow keys)
