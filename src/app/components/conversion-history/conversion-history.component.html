@@ -1,0 +1,93 @@
+<div class="history-container">
+    <mat-card class="history-card">
+      <mat-card-header>
+        <mat-card-title>Conversion History</mat-card-title>
+        <span class="spacer"></span>
+        <button 
+          mat-icon-button 
+          color="warn" 
+          (click)="clearHistory()" 
+          [disabled]="conversions.length === 0"
+          matTooltip="Clear history"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+      
+      <mat-card-content>
+        @if (conversions.length === 0) {
+          <div class="no-history">
+            <p>No conversion history yet.</p>
+            <p>Your conversions will appear here.</p>
+          </div>
+        }
+  
+        @if (conversions.length > 0) {
+          <div class="history-list">
+            <!-- Table for larger screens -->
+            <div class="table-container d-none d-md-block">
+              <table mat-table [dataSource]="conversions" class="w-100">
+                <!-- Date Column -->
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let conversion">{{ formatDate(conversion.timestamp) }}</td>
+                </ng-container>
+            
+                <!-- From Amount Column -->
+                <ng-container matColumnDef="fromAmount">
+                  <th mat-header-cell *matHeaderCellDef>From</th>
+                  <td mat-cell *matCellDef="let conversion">
+                    {{ conversion.amount | number:'1.2-4' }} {{ conversion.from }}
+                  </td>
+                </ng-container>
+            
+                <!-- To Amount Column -->
+                <ng-container matColumnDef="toAmount">
+                  <th mat-header-cell *matHeaderCellDef>To</th>
+                  <td mat-cell *matCellDef="let conversion">
+                    {{ conversion.result | number:'1.2-4' }} {{ conversion.to }}
+                  </td>
+                </ng-container>
+            
+                <!-- Rate Column -->
+                <ng-container matColumnDef="rate">
+                  <th mat-header-cell *matHeaderCellDef>Rate</th>
+                  <td mat-cell *matCellDef="let conversion">
+                    1 {{ conversion.from }} = {{ conversion.rate | number:'1.4-6' }} {{ conversion.to }}
+                  </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+            
+            <!-- Cards for mobile view -->
+            <div class="mobile-history d-block d-md-none">
+              @for (conversion of conversions; track conversion.timestamp) {
+                <mat-card class="history-item">
+                  <mat-card-content>
+                    <div class="conversion-date">
+                      {{ formatDate(conversion.timestamp) }}
+                    </div>
+                    <div class="conversion-details">
+                      <div class="from-amount">
+                        {{ conversion.amount | number:'1.2-4' }} {{ conversion.from }}
+                      </div>
+                      <mat-icon class="arrow-icon">arrow_downward</mat-icon>
+                      <div class="to-amount">
+                        {{ conversion.result | number:'1.2-4' }} {{ conversion.to }}
+                      </div>
+                    </div>
+                    <div class="conversion-rate">
+                      Rate: 1 {{ conversion.from }} = {{ conversion.rate | number:'1.4-6' }} {{ conversion.to }}
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              }
+            </div>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>

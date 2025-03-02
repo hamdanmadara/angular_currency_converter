@@ -1,0 +1,5 @@
+@if (isLoading) {
+    <div [class.overlay]="overlay" class="loader-container">
+      <mat-spinner [diameter]="getSize()" [color]="color"></mat-spinner>
+    </div>
+  }

@@ -1,0 +1,120 @@
+.converter-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  .converter-card {
+    width: 100%;
+    max-width: 600px;
+    
+    mat-card-header {
+      margin-bottom: 1rem;
+    }
+    
+    mat-card-content {
+      position: relative;
+    }
+  }
+  
+  .w-100 {
+    width: 100%;
+  }
+  
+  .error-message {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .currency-selection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    
+    .from-currency, .to-currency {
+      flex: 1;
+    }
+    
+    .swap-button {
+      display: flex;
+      justify-content: center;
+      margin: 0 0.5rem;
+    }
+  }
+  
+  .convert-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    
+    .convert-button {
+      min-width: 150px;
+      padding: 0.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      .button-spinner {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+  
+  .conversion-result {
+    margin-top: 2rem;
+    
+    .result-card {
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      
+      .result-amount {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+        flex-wrap: wrap;
+        
+        .from-amount, .to-amount {
+          font-size: 1.25rem;
+          font-weight: 500;
+          padding: 0.5rem;
+        }
+        
+        .equals-icon {
+          margin: 0 0.5rem;
+        }
+      }
+      
+      .exchange-rate {
+        text-align: center;
+        color: #666;
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 576px) {
+    .currency-selection {
+      flex-direction: column;
+      
+      .swap-button {
+        margin: 0.5rem 0;
+        transform: rotate(90deg);
+      }
+    }
+    
+    .result-amount {
+      flex-direction: column;
+      
+      .equals-icon {
+        transform: rotate(90deg);
+        margin: 0.5rem 0 !important;
+      }
+    }
+  }

@@ -1,0 +1,96 @@
+.history-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  .history-card {
+    width: 100%;
+    max-width: 600px;
+    
+    mat-card-header {
+      display: flex;
+      align-items: center;
+    }
+    
+    .spacer {
+      flex: 1;
+    }
+  }
+  
+  .no-history {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #666;
+    text-align: center;
+  }
+  
+  .history-list {
+    margin-top: 1rem;
+    
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+    
+    .w-100 {
+      width: 100%;
+    }
+  }
+  
+  .mobile-history {
+    .history-item {
+      margin-bottom: 1rem;
+      
+      .conversion-date {
+        color: #666;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .conversion-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        
+        .from-amount, .to-amount {
+          font-weight: 500;
+          padding: 0.25rem;
+        }
+        
+        .arrow-icon {
+          margin: 0.25rem 0;
+          color: #3f51b5;
+        }
+      }
+      
+      .conversion-rate {
+        text-align: center;
+        font-size: 0.85rem;
+        color: #666;
+      }
+    }
+  }
+  
+  // Bootstrap display utility classes
+  .d-none {
+    display: none !important;
+  }
+  
+  .d-block {
+    display: block !important;
+  }
+  
+  @media (min-width: 768px) {
+    .d-md-none {
+      display: none !important;
+    }
+    
+    .d-md-block {
+      display: block !important;
+    }
+  }
