@@ -1,5 +1,11 @@
-@if (isLoading) {
+<!-- @if (isLoading) {
     <div [class.overlay]="overlay" class="loader-container">
       <mat-spinner [diameter]="getSize()" [color]="color"></mat-spinner>
     </div>
-  }
+  } -->
+  <!-- loader.component.html -->
+<div *ngIf="isLoading" [class.overlay]="overlay" class="loader-container">
+  <mat-spinner [diameter]="getSize()" [color]="color"></mat-spinner>
+</div>
+
+<!-- Do the same for other components using @if -->
