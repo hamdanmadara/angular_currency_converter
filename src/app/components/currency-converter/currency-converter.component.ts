@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { finalize } from 'rxjs/operators';
 
 // Angular Material Imports
@@ -38,7 +38,8 @@ import { StorageService } from '../../services/storage.service';
     MatProgressSpinnerModule,
     LoaderComponent,
     NumberOnlyDirective,
-    ConversionHistoryComponent
+    ConversionHistoryComponent,
+    CommonModule
   ],
   templateUrl: './currency-converter.component.html',
   styleUrls: ['./currency-converter.component.scss']
@@ -177,5 +178,9 @@ export class CurrencyConverterComponent implements OnInit {
         this.markFormGroupTouched(control);
       }
     });
+  }
+
+  trackByCurrencyCode(index: number, currency: any): string {
+    return currency.code;
   }
 }

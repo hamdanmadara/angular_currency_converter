@@ -1,137 +1,125 @@
 <div class="converter-container">
-    <mat-card class="converter-card">
-      <mat-card-header>
-        <mat-card-title>Currency Converter</mat-card-title>
-      </mat-card-header>
+  <mat-card class="converter-card">
+    <mat-card-header>
+      <mat-card-title>Currency Converter</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Loader overlay -->
+      <app-loader [isLoading]="isLoadingCurrencies" [overlay]="true"></app-loader>
       
-      <mat-card-content>
-        <!-- Loader overlay -->
-        <app-loader [isLoading]="isLoadingCurrencies" [overlay]="true"></app-loader>
+      <!-- Error message -->
+      <div class="error-message" *ngIf="errorMessage">
+        <mat-error>{{ errorMessage }}</mat-error>
+      </div>
+      
+      <!-- Conversion form -->
+      <form [formGroup]="convertForm" (ngSubmit)="onSubmit()">
+        <!-- Amount input -->
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Amount</mat-label>
+            <input 
+              matInput 
+              formControlName="amount" 
+              type="text" 
+              appNumberOnly
+              placeholder="Enter amount"
+            >
+            <mat-error *ngIf="convertForm.get('amount')?.errors?.['required'] && convertForm.get('amount')?.touched">
+              Amount is required
+            </mat-error>
+            <mat-error *ngIf="convertForm.get('amount')?.errors?.['min'] && convertForm.get('amount')?.touched">
+              Amount must be greater than 0
+            </mat-error>
+          </mat-form-field>
+        </div>
         
-        <!-- Error message -->
-        @if (errorMessage) {
-          <div class="error-message">
-            <mat-error>{{ errorMessage }}</mat-error>
-          </div>
-        }
-        
-        <!-- Conversion form -->
-        <form [formGroup]="convertForm" (ngSubmit)="onSubmit()">
-          <!-- Amount input -->
-          <div class="form-group">
+        <!-- Currency selection -->
+        <div class="currency-selection">
+          <!-- From currency -->
+          <div class="from-currency">
             <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Amount</mat-label>
-              <input 
-                matInput 
-                formControlName="amount" 
-                type="text" 
-                appNumberOnly
-                placeholder="Enter amount"
-              >
-              @if (convertForm.get('amount')?.errors?.['required'] && convertForm.get('amount')?.touched) {
-                <mat-error>Amount is required</mat-error>
-              }
-              @if (convertForm.get('amount')?.errors?.['min'] && convertForm.get('amount')?.touched) {
-                <mat-error>Amount must be greater than 0</mat-error>
-              }
+              <mat-label>From</mat-label>
+              <mat-select formControlName="fromCurrency">
+                <mat-option *ngFor="let currency of currencies; trackBy: trackByCurrencyCode" [value]="currency.code">
+                  {{ currency.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="convertForm.get('fromCurrency')?.invalid && convertForm.get('fromCurrency')?.touched">
+                Please select a currency
+              </mat-error>
             </mat-form-field>
           </div>
           
-          <!-- Currency selection -->
-          <div class="currency-selection">
-            <!-- From currency -->
-            <div class="from-currency">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>From</mat-label>
-                <mat-select formControlName="fromCurrency">
-                  @for (currency of currencies; track currency.code) {
-                    <mat-option [value]="currency.code">
-                      {{ currency.name }}
-                    </mat-option>
-                  }
-                </mat-select>
-                @if (convertForm.get('fromCurrency')?.invalid && convertForm.get('fromCurrency')?.touched) {
-                  <mat-error>Please select a currency</mat-error>
-                }
-              </mat-form-field>
-            </div>
-            
-            <!-- Swap button -->
-            <div class="swap-button">
-              <button 
-                type="button" 
-                mat-mini-fab 
-                color="primary" 
-                (click)="swapCurrencies()"
-                [disabled]="isConverting"
-              >
-                <mat-icon>swap_horiz</mat-icon>
-              </button>
-            </div>
-            
-            <!-- To currency -->
-            <div class="to-currency">
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-label>To</mat-label>
-                <mat-select formControlName="toCurrency">
-                  @for (currency of currencies; track currency.code) {
-                    <mat-option [value]="currency.code">
-                      {{ currency.name }}
-                    </mat-option>
-                  }
-                </mat-select>
-                @if (convertForm.get('toCurrency')?.invalid && convertForm.get('toCurrency')?.touched) {
-                  <mat-error>Please select a currency</mat-error>
-                }
-              </mat-form-field>
-            </div>
-          </div>
-          
-          <!-- Convert button -->
-          <div class="convert-button-container">
+          <!-- Swap button -->
+          <div class="swap-button">
             <button 
-              type="submit" 
-              mat-raised-button 
+              type="button" 
+              mat-mini-fab 
               color="primary" 
-              class="convert-button"
-              [disabled]="isConverting || isLoadingCurrencies"
+              (click)="swapCurrencies()"
+              [disabled]="isConverting"
             >
-              @if (!isConverting) {
-                <span>Convert</span>
-              }
-              @if (isConverting) {
-                <mat-spinner [diameter]="24" [color]="'accent'" class="button-spinner"></mat-spinner>
-                <span>Converting...</span>
-              }
+              <mat-icon>swap_horiz</mat-icon>
             </button>
           </div>
-        </form>
+          
+          <!-- To currency -->
+          <div class="to-currency">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>To</mat-label>
+              <mat-select formControlName="toCurrency">
+                <mat-option *ngFor="let currency of currencies; trackBy: trackByCurrencyCode" [value]="currency.code">
+                  {{ currency.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="convertForm.get('toCurrency')?.invalid && convertForm.get('toCurrency')?.touched">
+                Please select a currency
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
         
-        <!-- Conversion result -->
-        @if (conversionResult !== null) {
-          <div class="conversion-result">
-            <div class="result-card">
-              <div class="result-amount">
-                <div class="from-amount">
-                  {{ convertForm.value.amount | number:'1.2-4' }} {{ convertForm.value.fromCurrency }}
-                </div>
-                <mat-icon class="equals-icon">arrow_right_alt</mat-icon>
-                <div class="to-amount">
-                  {{ conversionResult | number:'1.2-4' }} {{ convertForm.value.toCurrency }}
-                </div>
-              </div>
-              @if (conversionRate) {
-                <div class="exchange-rate">
-                  1 {{ convertForm.value.fromCurrency }} = {{ conversionRate | number:'1.4-6' }} {{ convertForm.value.toCurrency }}
-                </div>
-              }
+        <!-- Convert button -->
+        <div class="convert-button-container">
+          <button 
+            type="submit" 
+            mat-raised-button 
+            color="primary" 
+            class="convert-button"
+            [disabled]="isConverting || isLoadingCurrencies"
+          >
+            <span *ngIf="!isConverting">Convert</span>
+            <ng-container *ngIf="isConverting">
+              <mat-spinner [diameter]="24" [color]="'accent'" class="button-spinner"></mat-spinner>
+              <span>Converting...</span>
+            </ng-container>
+          </button>
+        </div>
+      </form>
+      
+      <!-- Conversion result -->
+      <div class="conversion-result" *ngIf="conversionResult !== null">
+        <div class="result-card">
+          <div class="result-amount">
+            <div class="from-amount">
+              {{ convertForm.value.amount | number:'1.2-4' }} {{ convertForm.value.fromCurrency }}
+            </div>
+            <mat-icon class="equals-icon">arrow_right_alt</mat-icon>
+            <div class="to-amount">
+              {{ conversionResult | number:'1.2-4' }} {{ convertForm.value.toCurrency }}
             </div>
           </div>
-        }
-        
-      </mat-card-content>
-    </mat-card>
-  </div>
-  
-  <!-- Include the History Component -->
-  <app-conversion-history></app-conversion-history>
+          <div class="exchange-rate" *ngIf="conversionRate">
+            1 {{ convertForm.value.fromCurrency }} = {{ conversionRate | number:'1.4-6' }} {{ convertForm.value.toCurrency }}
+          </div>
+        </div>
+      </div>
+      
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Include the History Component -->
+<app-conversion-history></app-conversion-history>

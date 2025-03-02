@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ConversionResult } from '../../models/conversion.model';
 import { StorageService } from '../../services/storage.service';
@@ -20,7 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     MatIconModule,
     MatTableModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CommonModule
   ],
   templateUrl: './conversion-history.component.html',
   styleUrls: ['./conversion-history.component.scss']

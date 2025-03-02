@@ -15,14 +15,21 @@
       </mat-card-header>
       
       <mat-card-content>
-        @if (conversions.length === 0) {
+        <ng-container *ngIf="conversions.length == 0">
           <div class="no-history">
             <p>No conversion history yet.</p>
             <p>Your conversions will appear here.</p>
           </div>
-        }
+        </ng-container>
+        <!-- @if (conversions.length === 0) {
+          <div class="no-history">
+            <p>No conversion history yet.</p>
+            <p>Your conversions will appear here.</p>
+          </div>
+        } -->
   
-        @if (conversions.length > 0) {
+        <!-- @if (conversions.length > 0) { -->
+        <ng-container *ngIf="conversions.length > 0">
           <div class="history-list">
             <!-- Table for larger screens -->
             <div class="table-container d-none d-md-block">
@@ -87,7 +94,8 @@
               }
             </div>
           </div>
-        }
+        </ng-container>
+        <!-- } -->
       </mat-card-content>
     </mat-card>
   </div>
